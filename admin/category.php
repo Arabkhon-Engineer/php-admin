@@ -12,9 +12,9 @@ if (isset($_GET['page'])) {
 <div class="container">
     <div class="d-flex justify-content-between mt-5">
         <h3>Kategoriyalar qismi</h3>
-        <a href="../layout/addCategory.php" class=" "><button type="button" class="btn btn-primary">Add Kategoriya</button></a>
+        <a href="../category/addCategory.php" class=" btn btn-primary">Add Kategoriya</a>
     </div>
-    <table class="table table-striped ">
+    <table class="table table-striped mt-2">
         <thead>
             <tr>
                 <th scope="col">#id</th>
@@ -26,6 +26,7 @@ if (isset($_GET['page'])) {
                 echo "<tr>";
                 echo "<td>" . $item['id'] . "</td>";
                 echo "<td>" . $item['title'] . "</td>";
+                echo "<td><a href='../layout/update_category.php?id=".$item['id']."' class='btn btn-primary mr-2'>Update</a><a href='../layout/delete_category.php?id=".$item['id']."' class='ml-2 btn btn-danger'>Delete</a> </td>";
                 echo "</tr>";
             } ?>
         </tbody>
@@ -37,7 +38,7 @@ if (isset($_GET['page'])) {
                     <span aria-hidden="true">&laquo;</span>
                 </a>
             </li>
-            <?php for ($page = 1; $page <= getPagination(); $page++) {  ?>
+            <?php for ($page = 1; $page <= getPagination("category"); $page++) {  ?>
                 <li class="page-item"><a class="page-link" href="/admin/category.php?page=<?= $page?>"> <?= $page ?></a></li>
             <?php } ?>
             <li class="page-item">
