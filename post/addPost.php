@@ -14,6 +14,8 @@ if (isset($_POST['post_add'])) {
 
 
 $categoryList = getCategoryList(1, true);
+$tagList = getTagList(1, true);
+$authorList = getAuthorList(1, true);
 
 ?>
 
@@ -36,9 +38,22 @@ $categoryList = getCategoryList(1, true);
         </select>
     </div>
     <div class="mb-3 w-75 ">
-        <label for="post_author_input" class="form-label ">Author</label>
-        <input type="text" required class="form-control" name="author_id" id="post_author_input" aria-describedby="emailHelp">
+        <label for="post_category_input" class="form-label ">Tag</label>
+        <select class="form-select w-100" aria-label="Default select example" name="author_id">
+            <?php foreach($tagList as $post): ?>
+            <option value=<?= $post['id']?>><?= $post['name']?></option>
+            <?php endforeach ?>
+        </select>
     </div>
+    <div class="mb-3 w-75 ">
+        <label for="post_category_input" class="form-label ">Author FullName</label>
+        <select class="form-select w-100" aria-label="Default select example" name="author_id">
+            <?php foreach($authorList as $post): ?>
+            <option value=<?= $post['id']?>><?= $post['firstname'] ?> - <?= $post['lastname'] ?></option>
+            <?php endforeach ?>
+        </select>
+    </div>
+    
     <button type="submit" name="post_add" class="btn btn-primary">Submit</button>
 </form>
 <?php require_once '../footer.php'  ?>

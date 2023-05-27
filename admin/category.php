@@ -26,7 +26,7 @@ if (isset($_GET['page'])) {
                 echo "<tr>";
                 echo "<td>" . $item['id'] . "</td>";
                 echo "<td>" . $item['title'] . "</td>";
-                echo "<td><a href='../layout/update_category.php?id=".$item['id']."' class='btn btn-primary mr-2'>Update</a><a href='../layout/delete_category.php?id=".$item['id']."' class='ml-2 btn btn-danger'>Delete</a> </td>";
+                echo "<td><a href='../category/update_category.php?id=".$item['id']."' class='btn btn-primary mr-2'>Update</a><a href='../category/delete_category.php?id=".$item['id']."' class='ml-2 btn btn-danger'>Delete</a> </td>";
                 echo "</tr>";
             } ?>
         </tbody>

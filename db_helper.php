@@ -5,7 +5,7 @@
 function getCategoryList($page, $withoutLimit = false)
 {
     require 'dbconnect.php';
-    $limit = 5;
+    $limit = 4;
     $offset = ($page -1) * $limit;
 
     if($withoutLimit){
@@ -18,8 +18,7 @@ function getCategoryList($page, $withoutLimit = false)
         $state->bindValue(":offset", $offset, PDO::PARAM_INT );
     }
     $state->execute();
-    $result = $state->fetchAll(PDO::FETCH_ASSOC);
-    return $result;
+    return $state->fetchAll(PDO::FETCH_ASSOC);
 };
 
 function addCategory($title){
@@ -73,6 +72,25 @@ function deleteCategory($id){
 
 //========================== POST ===============================================================
 
+function getAuthorList($page, $withoutLimit = false)
+{
+    require 'dbconnect.php';
+    $limit = 4;
+    $offset = ($page -1) * $limit;
+
+    if($withoutLimit){
+        $sql = "select * from user";
+        $state = $conn->prepare($sql);
+    }else{
+        $sql = 'select * from user limit :offset, :limit';
+        $state = $conn->prepare($sql);
+        $state->bindValue(":limit", $limit, PDO::PARAM_INT );
+        $state->bindValue(":offset", $offset, PDO::PARAM_INT );
+    }
+    $state->execute();
+    return $state->fetchAll(PDO::FETCH_ASSOC);
+};
+
 function getPostList($page)
 {
     require 'dbconnect.php';
@@ -91,7 +109,7 @@ function getPostList($page)
 function addPost($title, $category_id, $author_id, $content){
     require_once 'dbconnect.php';
     if(isset($_POST['post_add'])){
-        $sql_insert = "insert into post (title, category_id, visited_count, created_at, author_id, content) values(:title, :category_id, :visited_count,  :created_at, :author_id, :content,) ";
+        $sql_insert = "insert into post (title, category_id, author_id, content, visited_count, created_at) values(:title, :category_id, :author_id, :content, :visited_count,  :created_at) ";
         $state = $conn->prepare($sql_insert);
         $state->bindValue(':title', $title);
         $state->bindValue(':category_id', $category_id);
@@ -102,3 +120,106 @@ function addPost($title, $category_id, $author_id, $content){
         $state->execute();
     }
 };
+
+
+function getAuthor($author_id){
+    require 'dbconnect.php';
+    $sql = 'select * from user where id= :id';
+    $state = $conn->prepare($sql);
+    $state->bindValue(":id", $author_id, PDO::PARAM_INT );
+    $state->execute();
+    $result = $state->fetch(PDO::FETCH_ASSOC);
+    return $result;
+}
+
+function getPostById($id)
+{
+    require 'dbconnect.php';
+    $sql = 'select * from post where id= :id';
+    $state = $conn->prepare($sql);
+    $state->bindValue(":id", $id, PDO::PARAM_INT );
+    $state->execute();
+    $result = $state->fetch(PDO::FETCH_ASSOC);
+    return $result;
+};
+
+
+function updatePost($id, $title, $author_id, $content, $category_id){
+    require 'dbconnect.php';
+    $sql = 'update post set title= :title, author_id = :author_id, content= :content, category_id= :category_id   where id= :id';
+    $state = $conn->prepare($sql);
+    $state->bindValue(":id", $id, PDO::PARAM_INT );
+    $state->bindValue(":title", $title,);
+    $state->bindValue(":author_id", $author_id,);
+    $state->bindValue(":content", $content,);
+    $state->bindValue(":category_id", $category_id,);
+    $state->execute();
+}
+
+
+function deletePost($id){
+    require 'dbconnect.php';
+    $sql = 'delete from post where id= :id';
+    $state = $conn->prepare($sql);
+    $state->bindValue(":id", $id, PDO::PARAM_INT );
+    $state->execute();
+}
+
+// ===================== tag =========================================
+
+function getTagList($page, $withoutLimit = false)
+{
+    require 'dbconnect.php';
+    $limit = 5;
+    $offset = ($page -1) * $limit;
+
+    if($withoutLimit){
+        $sql = "select * from tag";
+        $state = $conn->prepare($sql);
+    }else{
+        $sql = 'select * from tag limit :offset, :limit';
+        $state = $conn->prepare($sql);
+        $state->bindValue(":limit", $limit, PDO::PARAM_INT );
+        $state->bindValue(":offset", $offset, PDO::PARAM_INT );
+    }
+    $state->execute();
+    return $state->fetchAll(PDO::FETCH_ASSOC);
+};
+
+function addTag($title){
+    require_once 'dbconnect.php';
+    if(isset($_POST['tag_add'])){
+        $sql_insert = "insert into tag (name) value(:name) ";
+        $state = $conn->prepare($sql_insert);
+        $state->bindValue(':name', $title);
+        $state->execute();
+    }
+};
+
+function getTagById($id)
+{
+    require 'dbconnect.php';
+    $sql = 'select * from tag where id= :id';
+    $state = $conn->prepare($sql);
+    $state->bindValue(":id", $id, PDO::PARAM_INT );
+    $state->execute();
+    $result = $state->fetch(PDO::FETCH_ASSOC);
+    return $result;
+};
+
+function updateTag($id, $title){
+    require 'dbconnect.php';
+    $sql = 'update tag set title= :title where id= :id';
+    $state = $conn->prepare($sql);
+    $state->bindValue(":id", $id, PDO::PARAM_INT );
+    $state->bindValue(":title", $title,);
+    $state->execute();
+}
+
+function deleteTag($id){
+    require 'dbconnect.php';
+    $sql = 'delete from tag where id= :id';
+    $state = $conn->prepare($sql);
+    $state->bindValue(":id", $id, PDO::PARAM_INT );
+    $state->execute();
+}
