@@ -1,6 +1,6 @@
 <?php 
-require_once 'header.php';
-require './db_helper.php';
+require_once '../header.php';
+require '../db_helper.php';
 if (isset($_GET['page'])) {
     $page = $_GET['page'];
 } else {
@@ -38,4 +38,4 @@ if (isset($_GET['page'])) {
             </li>
         </ul>
     </nav>
-<?php require_once 'footer.php'; ?>
+<?php require_once '../footer.php'; ?>

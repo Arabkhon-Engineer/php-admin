@@ -223,3 +223,76 @@ function deleteTag($id){
     $state->bindValue(":id", $id, PDO::PARAM_INT );
     $state->execute();
 }
+
+
+
+// ===================== user ===============================================
+
+function getUserList($page, $withoutLimit = false)
+{
+    require 'dbconnect.php';
+    $limit = 10;
+    $offset = ($page -1) * $limit;
+
+    if($withoutLimit){
+        $sql = "select * from user";
+        $state = $conn->prepare($sql);
+    }else{
+        $sql = 'select * from user limit :offset, :limit';
+        $state = $conn->prepare($sql);
+        $state->bindValue(":limit", $limit, PDO::PARAM_INT );
+        $state->bindValue(":offset", $offset, PDO::PARAM_INT );
+    }
+    $state->execute();
+    return $state->fetchAll(PDO::FETCH_ASSOC);
+};
+
+
+
+function addUser($username, $password, $firstname, $lastname){
+    require_once 'dbconnect.php';
+    if(isset($_POST['post_add'])){
+        $sql_insert = "insert into user (username, password, firstname, lastname, created_at) values(:username, :password, :firstname, :lastname, :created_at) ";
+        $state = $conn->prepare($sql_insert);
+        $state->bindValue(':username', $username);
+        $state->bindValue(':password', $password);
+        $state->bindValue(':firstname', $firstname,);
+        $state->bindValue(':lastname', $lastname);
+        $state->bindValue(':created_at', date("Y-m-d H:i:s"));
+        $state->execute();
+    }
+};
+
+function getUserById($id)
+{
+    require 'dbconnect.php';
+    $sql = 'select * from user where id= :id';
+    $state = $conn->prepare($sql);
+    $state->bindValue(":id", $id, PDO::PARAM_INT );
+    $state->execute();
+    $result = $state->fetch(PDO::FETCH_ASSOC);
+    return $result;
+};
+
+
+function updateUser($username, $password, $firstname, $lastname){
+    require 'dbconnect.php';
+    $sql = 'update user set username= :username, password = :password, firstname= :firstname, lastname= :lastname   where id= :id';
+    $state = $conn->prepare($sql);
+    $state->bindValue(":id", $id, PDO::PARAM_INT );
+    $state->bindValue(':username', $username);
+    $state->bindValue(':password', $password);
+    $state->bindValue(':firstname', $firstname,);
+    $state->bindValue(':lastname', $lastname);
+    $state->bindValue(':created_at', date("Y-m-d H:i:s"));
+    $state->execute();
+}
+
+
+function deleteUser($id){
+    require 'dbconnect.php';
+    $sql = 'delete from user where id= :id';
+    $state = $conn->prepare($sql);
+    $state->bindValue(":id", $id, PDO::PARAM_INT );
+    $state->execute();
+}
